@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.naming.directory.SearchControls;
@@ -249,7 +250,7 @@ public class DefaultLdapAuthoritiesPopulator implements LdapAuthoritiesPopulator
 		for (String role : userRoles) {
 
 			if (this.convertToUpperCase) {
-				role = role.toUpperCase();
+				role = role.toUpperCase(Locale.ROOT);
 			}
 
 			authorities.add(new SimpleGrantedAuthority(this.rolePrefix + role));

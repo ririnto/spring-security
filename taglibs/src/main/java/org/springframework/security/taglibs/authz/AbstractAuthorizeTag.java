@@ -16,6 +16,7 @@
 package org.springframework.security.taglibs.authz;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.FilterChain;
@@ -193,7 +194,7 @@ public abstract class AbstractAuthorizeTag {
 	}
 
 	public void setMethod(String method) {
-		this.method = (method != null) ? method.toUpperCase() : null;
+		this.method = (method != null) ? method.toUpperCase(Locale.ROOT) : null;
 	}
 
 	/*------------- Private helper methods  -----------------*/

@@ -121,9 +121,9 @@ public final class ActiveDirectoryLdapAuthenticationProvider extends
 	public ActiveDirectoryLdapAuthenticationProvider(String domain, String url,
 			String rootDn) {
 		Assert.isTrue(StringUtils.hasText(url), "Url cannot be empty");
-		this.domain = StringUtils.hasText(domain) ? domain.toLowerCase() : null;
+		this.domain = StringUtils.hasText(domain) ? domain.toLowerCase(Locale.ROOT) : null;
 		this.url = url;
-		this.rootDn = StringUtils.hasText(rootDn) ? rootDn.toLowerCase() : null;
+		this.rootDn = StringUtils.hasText(rootDn) ? rootDn.toLowerCase(Locale.ROOT) : null;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public final class ActiveDirectoryLdapAuthenticationProvider extends
 	 */
 	public ActiveDirectoryLdapAuthenticationProvider(String domain, String url) {
 		Assert.isTrue(StringUtils.hasText(url), "Url cannot be empty");
-		this.domain = StringUtils.hasText(domain) ? domain.toLowerCase() : null;
+		this.domain = StringUtils.hasText(domain) ? domain.toLowerCase(Locale.ROOT) : null;
 		this.url = url;
 		rootDn = this.domain == null ? null : rootDnFromDomain(this.domain);
 	}
@@ -368,7 +368,7 @@ public final class ActiveDirectoryLdapAuthenticationProvider extends
 	}
 
 	String createBindPrincipal(String username) {
-		if (domain == null || username.toLowerCase().endsWith(domain)) {
+		if (domain == null || username.toLowerCase(Locale.ROOT).endsWith(domain)) {
 			return username;
 		}
 

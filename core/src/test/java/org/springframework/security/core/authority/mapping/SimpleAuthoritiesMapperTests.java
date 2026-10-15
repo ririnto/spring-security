@@ -71,6 +71,23 @@ public class SimpleAuthoritiesMapperTests {
 	}
 
 	@Test
+	public void caseConversionIsIndependentOfTurkishLocale() {
+		Locale defaultLocale = Locale.getDefault();
+		try {
+			Locale.setDefault(new Locale("tr", "TR"));
+			SimpleAuthorityMapper mapper = new SimpleAuthorityMapper();
+			mapper.setPrefix("");
+			mapper.setConvertToUpperCase(true);
+			Set<String> mapped = AuthorityUtils.authorityListToSet(mapper
+					.mapAuthorities(AuthorityUtils.createAuthorityList("admin")));
+			assertThat(mapped).contains("ADMIN");
+		}
+		finally {
+			Locale.setDefault(defaultLocale);
+		}
+	}
+
+	@Test
 	public void duplicatesAreRemoved() {
 		SimpleAuthorityMapper mapper = new SimpleAuthorityMapper();
 		mapper.setConvertToUpperCase(true);

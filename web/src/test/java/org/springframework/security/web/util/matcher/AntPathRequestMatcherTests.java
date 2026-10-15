@@ -16,6 +16,8 @@
 
 package org.springframework.security.web.util.matcher;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
@@ -82,6 +84,21 @@ public class AntPathRequestMatcherTests {
 		assertThat(matcher.matches(createRequest("/blah/blah"))).isTrue();
 		assertThat(matcher.matches(createRequest("/blah/bleh"))).isFalse();
 		assertThat(matcher.matches(createRequest("/blah/aaa/blah/bbb"))).isTrue();
+	}
+
+	@Test
+	public void trailingWildcardMatchesIndependentlyOfTurkishLocale() {
+		Locale defaultLocale = Locale.getDefault();
+		try {
+			Locale.setDefault(new Locale("tr", "TR"));
+			assertThat(new AntPathRequestMatcher("/I/**", null, false)
+					.matches(createRequest("/i/resource"))).isTrue();
+			assertThat(new AntPathRequestMatcher("/i/**", null, false)
+					.matches(createRequest("/I/resource"))).isTrue();
+		}
+		finally {
+			Locale.setDefault(defaultLocale);
+		}
 	}
 
 	@Test
