@@ -1,6 +1,6 @@
 buildscript {
 	repositories {
-		maven { url "https://repo.spring.io/plugins-release" }
+		mavenCentral()
 	}
 	dependencies {
 		classpath("com.bmuschko:gradle-tomcat-plugin:2.2.4")
