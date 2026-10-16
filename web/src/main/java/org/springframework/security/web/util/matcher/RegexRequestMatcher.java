@@ -65,10 +65,10 @@ public final class RegexRequestMatcher implements RequestMatcher {
 	 */
 	public RegexRequestMatcher(String pattern, String httpMethod, boolean caseInsensitive) {
 		if (caseInsensitive) {
-			this.pattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+			this.pattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		}
 		else {
-			this.pattern = Pattern.compile(pattern);
+			this.pattern = Pattern.compile(pattern, Pattern.DOTALL);
 		}
 		this.httpMethod = StringUtils.hasText(httpMethod) ? HttpMethod
 				.valueOf(httpMethod) : null;
