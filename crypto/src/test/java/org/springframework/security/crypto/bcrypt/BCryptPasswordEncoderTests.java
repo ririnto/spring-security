@@ -18,6 +18,7 @@ package org.springframework.security.crypto.bcrypt;
 import org.junit.Test;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -102,5 +103,32 @@ public class BCryptPasswordEncoderTests {
 	public void matchNullRawPassword() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		encoder.matches(null, "does-not-matter");
+	}
+
+	@Test
+	public void acceptsPasswordWith72Utf8Bytes() {
+		char[] passwordChars = new char[36];
+		Arrays.fill(passwordChars, (char) 0x03C0);
+		String rawPassword = new String(passwordChars);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(4);
+		String encodedPassword = encoder.encode(rawPassword);
+		assertThat(encoder.matches(rawPassword, encodedPassword)).isTrue();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void encodeRejectsPasswordOver72Utf8Bytes() {
+		char[] passwordChars = new char[37];
+		Arrays.fill(passwordChars, (char) 0x03C0);
+		new BCryptPasswordEncoder(4).encode(new String(passwordChars));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void matchesRejectsPasswordOver72Utf8Bytes() {
+		char[] passwordChars = new char[37];
+		Arrays.fill(passwordChars, (char) 0x03C0);
+		String rawPassword = new String(passwordChars);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(4);
+		String encodedPassword = encoder.encode(rawPassword.substring(0, 36));
+		encoder.matches(rawPassword, encodedPassword);
 	}
 }
